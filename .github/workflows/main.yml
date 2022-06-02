@@ -9,6 +9,13 @@ jobs:
     if: github.event.label.name == 'QA'
     runs-on: ubuntu-latest
     steps:
+      - name: 'Get information of the pull request'
+        id: pull_request_info
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RESPONSE=$(curl -H "Authorization: token ${GITHUB_TOKEN}" ${{ github.event.issue.pull_request.url }})
+          echo "::set-output name=head_branch::$(echo ${RESPONSE} | jq '.head.ref' | sed 's/\"//g')"
       - name: 'Post comment'
         run: |
-          echo "${{ github.event }}";
+          echo "${{ steps.pull_request_info.outputs.head_branch }}";
