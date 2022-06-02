@@ -16,6 +16,15 @@ jobs:
         run: |
           RESPONSE=$(curl -H "Authorization: token ${GITHUB_TOKEN}" ${{ github.event.pull_request.url }})
           echo "::set-output name=head_branch::$(echo ${RESPONSE} | jq '.head.ref' | sed 's/\"//g')"
-      - name: 'Post comment'
-        run: |
-          echo "${{ steps.pull_request_info.outputs.head_branch }}";
+      - name: Post comment
+        if: success()
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: "対象の branch は ${{ steps.pull_request_info.outputs.head_branch }} です"
+            });
