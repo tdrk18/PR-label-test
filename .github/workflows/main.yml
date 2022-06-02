@@ -14,7 +14,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          RESPONSE=$(curl -H "Authorization: token ${GITHUB_TOKEN}" ${{ github.event.issue.pull_request.url }})
+          RESPONSE=$(curl -H "Authorization: token ${GITHUB_TOKEN}" ${{ github.event.pull_request.url }})
           echo "::set-output name=head_branch::$(echo ${RESPONSE} | jq '.head.ref' | sed 's/\"//g')"
       - name: 'Post comment'
         run: |
