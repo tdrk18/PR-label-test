@@ -1,4 +1,4 @@
-name: CI
+name: Bitrise
 
 on:
   pull_request:
@@ -6,10 +6,11 @@ on:
 
 jobs:
   staging-build:
+    # 'QA'ラベルが追加されたとき or 'QA'ラベルが付いたPull Requestに新たなcommitが追加されたとき or 'QA'ラベルが付いたPull Requestのbase branchが変わったとき
     if: github.event.label.name == 'QA' || contains(github.event.pull_request.labels.*.name, 'QA')
     runs-on: ubuntu-latest
     steps:
-      # 対象のPull Requestのbranch名を取得する
+      # 対象のPull Requestのhead branchを取得する
       - name: 'Get information of the pull request'
         id: pull_request_info
         env:
