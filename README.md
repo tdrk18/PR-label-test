@@ -1,4 +1,4 @@
 # PR-label-test
 
 hoge
-fuga
+fugadd
