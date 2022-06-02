@@ -10,8 +10,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Post comment'
-        uses: actions/github-script@v3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            echo "${{ github.event }}";
+        run: |
+          echo "${{ github.event }}";
