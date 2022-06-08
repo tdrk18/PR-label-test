@@ -10,24 +10,14 @@ jobs:
     if: github.event.label.name == 'QA' || contains(github.event.pull_request.labels.*.name, 'QA')
     runs-on: ubuntu-latest
     steps:
-      # 対象のPull Requestのhead branchを取得する
-      - name: 'Get information of the pull request'
-        id: pull_request_info
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          RESPONSE=$(curl -H "Authorization: token ${GITHUB_TOKEN}" ${{ github.event.pull_request.url }})
-          echo "::set-output name=head_branch::$(echo ${RESPONSE} | jq '.head.ref' | sed 's/\"//g')"
-
       # Bitrise APIを叩く
       - name: Call bitrise API
         id: call_bitrise_api
-        if: success()
         env:
           BITRISE_SLUG: ${{ secrets.BITRISE_SLUG }}
           BITRISE_TOKEN: ${{ secrets.BITRISE_TOKEN }}
         run: |
-          echo "::set-output name=result::$(curl -X POST "https://api.bitrise.io/v0.1/apps/${BITRISE_SLUG}/builds" -H "accept: application/json" -H "Authorization: ${BITRISE_TOKEN}" -H "Content-Type: application/json" -d "{ \"build_params\": { \"branch\": \"${{ steps.pull_request_info.outputs.head_branch }}\", \"workflow_id\": \"staging\" }, \"hook_info\": { \"type\": \"bitrise\" }}")"
+          echo "::set-output name=result::$(curl -X POST "https://api.bitrise.io/v0.1/apps/${BITRISE_SLUG}/builds" -H "accept: application/json" -H "Authorization: ${BITRISE_TOKEN}" -H "Content-Type: application/json" -d "{ \"build_params\": { \"branch\": \"${{ github.event.pull_request.head.ref }}\", \"workflow_id\": \"staging\" }, \"hook_info\": { \"type\": \"bitrise\" }}")"
       
       # Bitrise APIの実行結果をPull Requestにコメントする
       - name: Post comment
