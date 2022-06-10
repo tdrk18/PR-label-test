@@ -7,7 +7,7 @@ on:
 jobs:
   staging-build:
     # 'QA'ラベルが追加されたとき or 'QA'ラベルが付いたPull Requestに新たなcommitが追加されたとき or 'QA'ラベルが付いたPull Requestのbase branchが変わったとき
-    if: github.event.label.name == 'QA' || contains(github.event.pull_request.labels.*.name, 'QA')
+    if: github.event.label.name == 'QA' || (github.event.action == 'synchronize' && contains(github.event.pull_request.labels.*.name, 'QA'))
     runs-on: ubuntu-latest
     steps:
       # Bitrise APIを叩く
