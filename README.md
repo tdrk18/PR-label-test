@@ -2,4 +2,3 @@
 
 hoge
 fuga
-piyo
