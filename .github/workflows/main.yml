@@ -20,8 +20,8 @@ jobs:
         env:
           CIRCLE_TOKEN: ${{ secrets.CIRCLE_TOKEN }}
         run: |
-          echo "::set-output name=result::$(curl --header "Content-Type: application/json" --data {\"build_parameters\": {\"BUILD_FLAVOR\": \"staging\", \"BUILD_TYPE\": \"proguardDebug\"}} --request POST "https://circleci.com/api/v1.1/project/github/tdrk18/BitBox/tree/$revision?circle-token=${{ CIRCLE_TOKEN }}")"
-      
+          echo "::set-output name=result::$(curl --header "Content-Type: application/json" --data {\"build_parameters\": {\"BUILD_FLAVOR\": \"staging\", \"BUILD_TYPE\": \"proguardDebug\"}} --request POST "https://circleci.com/api/v1.1/project/github/tdrk18/BitBox/tree/$revision?circle-token=${CIRCLE_TOKEN}")"
+
       # 実行結果をPull Requestにコメントする
       - name: Post comment
         uses: actions/github-script@v3
