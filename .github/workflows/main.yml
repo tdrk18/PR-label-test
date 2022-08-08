@@ -33,5 +33,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: '```${{ steps.execute_script.outputs.result }}```',
+              body: '```\n${{ steps.execute_script.outputs.result }}\n```',
             });
