@@ -20,7 +20,7 @@ jobs:
         env:
           CIRCLE_TOKEN: ${{ secrets.CIRCLE_TOKEN }}
         run: |
-          echo "::set-output name=result::$(CIRCLE_TOKEN=CIRCLE_TOKEN sh ./bin/script.sh staging proguardDebug ${{ github.event.pull_request.head.ref }})"
+          echo "::set-output name=result::$(CIRCLE_TOKEN=${CIRCLE_TOKEN} sh ./bin/script.sh staging proguardDebug ${{ github.event.pull_request.head.ref }})"
       
       # 実行結果をPull Requestにコメントする
       - name: Post comment
