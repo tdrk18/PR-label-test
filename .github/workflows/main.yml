@@ -16,13 +16,14 @@ jobs:
         env:
           CIRCLE_TOKEN: ${{ secrets.CIRCLE_TOKEN }}
         run: |
-          response=$(curl --header "Content-Type: application/json" --data "{\"build_parameters\": {\"BUILD_FLAVOR\": \"staging\", \"BUILD_TYPE\": \"proguardDebug\"}}" --request POST "https://circleci.com/api/v1.1/project/github/tdrk18/BitBox/tree/main?circle-token=${CIRCLE_TOKEN}")
+          echo "HOGE"
+#          response=$(curl --header "Content-Type: application/json" --data "{\"build_parameters\": {\"BUILD_FLAVOR\": \"staging\", \"BUILD_TYPE\": \"proguardDebug\"}}" --request POST "https://circleci.com/api/v1.1/project/github/tdrk18/BitBox/tree/main?circle-token=${CIRCLE_TOKEN}")
           #build_url=$(echo $response | grep build_url)
           # 改行をエスケープずる
-          response="${response//$'\n'/'%0A'}"
+#          response="${response//$'\n'/'%0A'}"
           #echo "::set-output name=build_url::$build_url"
-          echo "::set-output name=result::$response"
-          echo $response
+#          echo "::set-output name=result::$response"
+#          echo $response
 
       # 実行結果をPull Requestにコメントする
       - name: Post comment
@@ -34,5 +35,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: '```\n${{ steps.execute_script.outputs.result }}\n```',
+              body: '```\nHOGEHOGE\n```',
             });
