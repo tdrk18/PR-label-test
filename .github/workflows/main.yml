@@ -10,17 +10,13 @@ jobs:
     if: github.event.label.name == 'QA' || (github.event.action == 'synchronize' && contains(github.event.pull_request.labels.*.name, 'QA'))
     runs-on: ubuntu-latest
     steps:
-      # checkoutする
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      # scriptを実行する
+      # CircleCI APIを叩く
       - name: Execute script
         id: execute_script
         env:
           CIRCLE_TOKEN: ${{ secrets.CIRCLE_TOKEN }}
         run: |
-          echo "::set-output name=result::$(curl --header "Content-Type: application/json" --data "{\"build_parameters\": {\"BUILD_FLAVOR\": \"staging\", \"BUILD_TYPE\": \"proguardDebug\"}}" --request POST "https://circleci.com/api/v1.1/project/github/tdrk18/BitBox/tree/$revision?circle-token=${CIRCLE_TOKEN}")"
+          echo "::set-output name=result::$(curl --header "Content-Type: application/json" --data "{\"build_parameters\": {\"BUILD_FLAVOR\": \"staging\", \"BUILD_TYPE\": \"proguardDebug\"}}" --request POST "https://circleci.com/api/v1.1/project/github/tdrk18/BitBox/tree/main?circle-token=${CIRCLE_TOKEN}")"
 
       # 実行結果をPull Requestにコメントする
       - name: Post comment
