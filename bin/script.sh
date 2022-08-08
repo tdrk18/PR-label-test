@@ -11,6 +11,8 @@ echo "build_flavor: $build_flavor"
 echo "build_type:   $build_type"
 echo "branch:       $branch"
 
+revision=main
+
 curl \
     --header "Content-Type: application/json" \
     --data '{"build_parameters": {"BUILD_FLAVOR": "'$build_flavor'", "BUILD_TYPE": "'$build_type'"}}' \
