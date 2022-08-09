@@ -16,7 +16,7 @@ jobs:
         env:
           CIRCLE_TOKEN: ${{ secrets.CIRCLE_TOKEN }}
         run: |
-          response=$(curl --header "Content-Type: application/json" --data "{\"build_parameters\": {\"BUILD_FLAVOR\": \"staging\", \"BUILD_TYPE\": \"proguardDebug\"}}" --request POST "https://circleci.com/api/v1.1/project/github/tdrk18/BitBox/tree/main?circle-token=${CIRCLE_TOKEN}")
+          response=$(curl --header "Content-Type: application/json" -H "Circle-Token: ${CIRCLE_TOKEN}" --data "{\"build_parameters\": {\"BUILD_FLAVOR\": \"staging\", \"BUILD_TYPE\": \"proguardDebug\"}}" --request POST "https://circleci.com/api/v1.1/project/github/tdrk18/BitBox/tree/main")
           build_url=$(echo $response | jq -r '.build_url')
           echo "::set-output name=build_url::$build_url"
 
