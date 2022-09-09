@@ -22,7 +22,7 @@ jobs:
 
       # 実行結果をPull Requestにコメントする
       - name: Post comment
-        uses: actions/github-script@v6
+        uses: actions/github-script@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
