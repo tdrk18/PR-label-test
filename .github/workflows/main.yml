@@ -19,7 +19,7 @@ jobs:
         run: |
           echo "${{ github.event_name }}"
           echo "result=${{ github.event_name }}" >> $GITHUB_OUTPUT
-          echo "response=$(curl -X POST \"https://api.bitrise.io/v0.1/apps/${BITRISE_SLUG}/builds\" -H \"accept: application/json\" -H \"Authorization: ${BITRISE_TOKEN}\" -H \"Content-Type: application/json\" -d \"{ \"build_params\": { \"branch\": \"${{ github.event.pull_request.head.ref }}\", \"workflow_id\": \"staging\" }, \"hook_info\": { \"type\": \"bitrise\" }}\")" >> $GITHUB_OUTPUT
+          echo "response=$(curl -X POST "https://api.bitrise.io/v0.1/apps/${BITRISE_SLUG}/builds" -H "accept: application/json" -H "Authorization: ${BITRISE_TOKEN}" -H "Content-Type: application/json" -d "{ \"build_params\": { \"branch\": \"${{ github.event.pull_request.head.ref }}\", \"workflow_id\": \"staging\" }, \"hook_info\": { \"type\": \"bitrise\" }}")" >> $GITHUB_OUTPUT
       
       # Bitrise APIの実行結果をPull Requestにコメントする
       - name: Post comment
