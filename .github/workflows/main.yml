@@ -18,7 +18,7 @@ jobs:
           BITRISE_TOKEN: ${{ secrets.BITRISE_TOKEN }}
         run: |
           echo "${{ github.event_name }}"
-#          echo "::set-output name=result::$(curl -X POST "https://api.bitrise.io/v0.1/apps/${BITRISE_SLUG}/builds" -H "accept: application/json" -H "Authorization: ${BITRISE_TOKEN}" -H "Content-Type: application/json" -d "{ \"build_params\": { \"branch\": \"${{ github.event.pull_request.head.ref }}\", \"workflow_id\": \"staging\" }, \"hook_info\": { \"type\": \"bitrise\" }}")"
+          echo "::set-output name=result::${{ github.event_name }}"
       
       # Bitrise APIの実行結果をPull Requestにコメントする
       - name: Post comment
@@ -30,5 +30,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: '${{ github.event.action }}',
+              body: '${{ steps.call_bitrise_api.outputs.result }}',
             });
