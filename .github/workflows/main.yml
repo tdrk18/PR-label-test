@@ -22,11 +22,11 @@ jobs:
       
       # Bitrise APIの実行結果をPull Requestにコメントする
       - name: Post comment
-        uses: actions/github-script@v3
+        uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            github.issues.createComment({
+            github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
