@@ -1,0 +1,25 @@
+name: Dispatch
+
+on:
+  workflow_dispatch:
+  inputs:
+    type:
+      description: 'Build type'
+      required: true
+      default: 'inhouse'
+      type: choice
+      options:
+      - inhouse
+      - staging
+      - release
+  
+  jobs:
+    print-inputs:
+      runs-on: ubuntu-latest
+      steps:
+        - name: "print"
+          env:
+            TYPE: ${{ inputs.type }}
+          run: |
+            echo "TYPE: $TYPE"
+          
