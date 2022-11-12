@@ -20,7 +20,7 @@ jobs:
       - name: "print"
         env:
           TYPE: ${{ inputs.type }}
-          BRANCH: ${{ ref }}
+          BRANCH: ${{ github.ref }}
         run: |
           echo "TYPE: $TYPE"
           echo "BRANCH: $BRANCH"
