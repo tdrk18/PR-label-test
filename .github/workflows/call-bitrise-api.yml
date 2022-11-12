@@ -1,0 +1,32 @@
+name: Call Bitrise API
+
+on:
+  workflow_call:
+    inputs:
+      branch:
+        required: true
+        type: string
+      type:
+        required: true
+        type: string
+    outputs:
+      response:
+        description: "The response of Bitrise API"
+        value: ${{ jobs.build.outputs.output1 }}
+    secrets:
+      slug:
+        required: true
+      token:
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      outputs1: ${{ steps.call.outputs.response }}
+    steps:
+      - name: Run a multi-line script
+        id: call
+        run: |
+          response=$(curl -X POST "https://api.bitrise.io/v0.1/apps/${{ secrets.slug }}/builds" -H "accept: application/json" -H "Authorization: ${{ secrets.token }}" -H "Content-Type: application/json" -d "{ \"build_params\": { \"branch\": \"${{ inputs.branch }}\", \"workflow_id\": \"${{ inputs.type }}\" }, \"hook_info\": { \"type\": \"bitrise\" }}")
+          echo "response=$response" >> $GITHUB_OUTPUT
