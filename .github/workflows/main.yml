@@ -29,5 +29,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: '${{ steps.call_bitrise_api.outputs.response }}',
+              body: '${{ needs.staging-build.outputs.response }}',
             });
