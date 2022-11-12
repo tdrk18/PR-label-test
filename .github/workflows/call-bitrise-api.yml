@@ -12,7 +12,7 @@ on:
     outputs:
       response:
         description: "The response of Bitrise API"
-        value: ${{ jobs.build.outputs.output1 }}
+        value: ${{ jobs.build.outputs.response }}
     secrets:
       slug:
         required: true
@@ -23,7 +23,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
-      output1: ${{ steps.call.outputs.response }}
+      response: ${{ steps.call.outputs.response }}
     steps:
       - name: Run a multi-line script
         id: call
