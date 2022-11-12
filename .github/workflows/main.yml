@@ -8,19 +8,17 @@ jobs:
   staging-build:
     # 'QA'ラベルが追加されたとき or 'QA'ラベルが付いたPull Requestに新たなcommitが追加されたとき or 'QA'ラベルが付いたPull Requestのbase branchが変わったとき
     if: github.event.label.name == 'QA' || (github.event.action == 'synchronize' && contains(github.event.pull_request.labels.*.name, 'QA'))
+    uses: ./.github/workflows/call-bitrise-api.yml
+    with:
+      branch: ${{ github.event.pull_request.head.ref }}
+      type: "staging"
+    secrets: 
+      slug: ${{ secrets.BITRISE_SLUG }}
+      token: ${{ secrets.BITRISE_TOKEN }}
+
+  post-comment:
     runs-on: ubuntu-latest
     steps:
-      # Bitrise APIを叩く
-      - name: Call bitrise API
-        id: call_bitrise_api
-        env:
-          BITRISE_SLUG: ${{ secrets.BITRISE_SLUG }}
-          BITRISE_TOKEN: ${{ secrets.BITRISE_TOKEN }}
-        run: |
-          echo "${{ github.event_name }}"
-          echo "result=${{ github.event_name }}" >> $GITHUB_OUTPUT
-          echo "response=$(curl -X POST "https://api.bitrise.io/v0.1/apps/${BITRISE_SLUG}/builds" -H "accept: application/json" -H "Authorization: ${BITRISE_TOKEN}" -H "Content-Type: application/json" -d "{ \"build_params\": { \"branch\": \"${{ github.event.pull_request.head.ref }}\", \"workflow_id\": \"staging\" }, \"hook_info\": { \"type\": \"bitrise\" }}")" >> $GITHUB_OUTPUT
-      
       # Bitrise APIの実行結果をPull Requestにコメントする
       - name: Post comment
         uses: actions/github-script@v6
