@@ -40,4 +40,4 @@ jobs:
     steps:
       - name: "print"
         run: |
-          echo ${{ needs.build.outputs.response }} | jq .
+          echo "\'${{ needs.build.outputs.response }}\'" | jq .
