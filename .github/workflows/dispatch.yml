@@ -20,14 +20,14 @@ jobs:
       - name: "print"
         env:
           TYPE: ${{ inputs.type }}
-          BRANCH: ${GITHUB_REF}
+          BRANCH: ${{ github.ref_name }}
         run: |
           echo "TYPE: $TYPE"
           echo "BRANCH: $BRANCH"
   build:
     uses: ./.github/workflows/call-bitrise-api.yml
     with:
-      branch: ${GITHUB_REF}
+      branch: ${{ github.ref_name }}
       type: ${{ inputs.type }}
     secrets: 
       slug: ${{ secrets.BITRISE_SLUG }}
