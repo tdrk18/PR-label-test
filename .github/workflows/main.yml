@@ -12,8 +12,8 @@ jobs:
     with:
       branch: ${{ github.event.pull_request.head.ref }}
       type: "staging"
-    secrets: 
       slug: ${{ secrets.BITRISE_SLUG }}
+    secrets: 
       token: ${{ secrets.BITRISE_TOKEN }}
 
   post-comment:
