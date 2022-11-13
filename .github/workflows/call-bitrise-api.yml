@@ -9,13 +9,14 @@ on:
       type:
         required: true
         type: string
+      slug:
+        required: true
+        type: string
     outputs:
       response:
         description: "The response of Bitrise API"
         value: ${{ jobs.build.outputs.response }}
     secrets:
-      slug:
-        required: true
       token:
         required: true
 
@@ -28,5 +29,5 @@ jobs:
       - name: Run a multi-line script
         id: call
         run: |
-          res=$(curl -X POST "https://api.bitrise.io/v0.1/apps/${{ secrets.slug }}/builds" -H "accept: application/json" -H "Authorization: ${{ secrets.token }}" -H "Content-Type: application/json" -d "{ \"build_params\": { \"branch\": \"${{ inputs.branch }}\", \"workflow_id\": \"${{ inputs.type }}\" }, \"hook_info\": { \"type\": \"bitrise\" }}")
+          res=$(curl -X POST "https://api.bitrise.io/v0.1/apps/${{ inputs.slug }}/builds" -H "accept: application/json" -H "Authorization: ${{ secrets.token }}" -H "Content-Type: application/json" -d "{ \"build_params\": { \"branch\": \"${{ inputs.branch }}\", \"workflow_id\": \"${{ inputs.type }}\" }, \"hook_info\": { \"type\": \"bitrise\" }}")
           echo "response=${res}" >> $GITHUB_OUTPUT
