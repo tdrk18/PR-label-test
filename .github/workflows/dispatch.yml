@@ -24,3 +24,11 @@ jobs:
         run: |
           echo "TYPE: $TYPE"
           echo "BRANCH: $BRANCH"
+  build:
+    uses: ./.github/workflows/call-bitrise-api.yml
+    with:
+      branch: ${{ github.ref }}
+      type: ${{ inputs.type }}
+    secrets: 
+      slug: ${{ secrets.BITRISE_SLUG }}
+      token: ${{ secrets.BITRISE_TOKEN }}
