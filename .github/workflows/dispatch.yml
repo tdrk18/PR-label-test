@@ -29,7 +29,7 @@ jobs:
     with:
       branch: ${{ github.ref_name }}
       type: ${{ inputs.type }}
-      slug: ${{ secrets.BITRISE_SLUG }}
+      slug: '9acd23037a1e0480'
     secrets: 
       token: ${{ secrets.BITRISE_TOKEN }}
   
