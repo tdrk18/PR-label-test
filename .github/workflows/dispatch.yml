@@ -25,6 +25,7 @@ jobs:
           echo "TYPE: $TYPE"
           echo "BRANCH: $BRANCH"
   build:
+    needs: [print-inputs]
     uses: ./.github/workflows/call-bitrise-api.yml
     with:
       branch: ${{ github.ref_name }}
