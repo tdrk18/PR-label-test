@@ -1,43 +1,22 @@
-name: Dispatch
+name: Start DeployGate build
 
 on:
   workflow_dispatch:
     inputs:
-      type:
-        description: 'Build type'
+      configuration:
+        description: 'Configuration'
         required: true
         default: 'inhouse'
         type: choice
         options:
         - inhouse
         - staging
-        - release
 
 jobs:
-  print-inputs:
-    runs-on: ubuntu-latest
-    steps:
-      - name: "print"
-        env:
-          TYPE: ${{ inputs.type }}
-          BRANCH: ${{ github.ref_name }}
-        run: |
-          echo "TYPE: $TYPE"
-          echo "BRANCH: $BRANCH"
   build:
-    needs: [print-inputs]
     uses: ./.github/workflows/call-bitrise-api.yml
     with:
       branch: ${{ github.ref_name }}
-      type: ${{ inputs.type }}
-      slug: '9acd23037a1e0480'
+      workflow: ${{ inputs.configuration }}
     secrets: 
       token: ${{ secrets.BITRISE_TOKEN }}
-  
-  print-outputs:
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-      - name: "print"
-        run: |
-          echo '${{ needs.build.outputs.response }}' | jq .
