@@ -16,15 +16,12 @@ on:
     secrets:
       token:
         required: true
-      
-env:
-  BITRISE_SLUG: '9acd23037a1e0480'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      BITRISE_SLUG: ${{ env.BITRISE_SLUG }}
+      BITRISE_SLUG: '9acd23037a1e0480'
     outputs:
       response: ${{ steps.call.outputs.response }}
     steps:
