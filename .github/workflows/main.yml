@@ -1,24 +1,23 @@
-name: Bitrise
+name: QA-build-request
 
 on:
   pull_request:
-    types: [labeled, synchronize]
+    types: [labeled, synchronize] # ラベル追加 or Pull Request更新
 
 jobs:
-  staging-build:
-    # 'QA'ラベルが追加されたとき or 'QA'ラベルが付いたPull Requestに新たなcommitが追加されたとき or 'QA'ラベルが付いたPull Requestのbase branchが変わったとき
+  build:
+    # 追加されたラベルが'QA'のとき or 'QA'ラベルが付いたPull Requestに変更が加わったとき
     if: github.event.label.name == 'QA' || (github.event.action == 'synchronize' && contains(github.event.pull_request.labels.*.name, 'QA'))
     uses: ./.github/workflows/call-bitrise-api.yml
     with:
       branch: ${{ github.event.pull_request.head.ref }}
-      type: "staging"
-      slug: ${{ secrets.BITRISE_SLUG }}
+      workflow: 'staging'
     secrets: 
       token: ${{ secrets.BITRISE_TOKEN }}
 
-  post-comment:
+  comment:
     runs-on: ubuntu-latest
-    needs: [staging-build]
+    needs: [build]
     steps:
       # Bitrise APIの実行結果をPull Requestにコメントする
       - name: Post comment
@@ -30,5 +29,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: '${{ needs.staging-build.outputs.response }}',
+              body: 'QAビルド依頼 実行結果\n```\n${{ needs.build.outputs.response }}\n```',
             });
