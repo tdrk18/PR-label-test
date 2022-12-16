@@ -1,0 +1,34 @@
+name: Start DeployGate build
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_flavor:
+        description: 'Build Flavor'
+        required: true
+        default: 'development'
+        type: choice
+        options:
+        - development
+        - staging
+        - production
+      build_type:
+        description: 'Build Type'
+        required: true
+        default: 'proguardDebug'
+        type: choice
+        options:
+        - proguardDebug
+        - proguardRelease
+        - proguardReleaseSecret
+        - proguardReleaseUpload
+
+jobs:
+  build:
+    uses: ./.github/workflows/call-circleci-api.yml
+    with:
+      branch: ${{ github.ref_name }}
+      build_flavor: ${{ inputs.build_flavor }}
+      build_type: ${{ inputs.build_type }}
+    secrets: 
+      token: ${{ secrets.CIRCLE_TOKEN }}
