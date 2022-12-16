@@ -8,9 +8,11 @@ jobs:
   build:
     # 追加されたラベルが'QA'のとき or 'QA'ラベルが付いたPull Requestに変更が加わったとき
     if: github.event.label.name == 'QA' || (github.event.action == 'synchronize' && contains(github.event.pull_request.labels.*.name, 'QA'))
-    uses: ./.github/workflows/call-bitrise-api.yml
+    uses: ./.github/workflows/call-circleci-api.yml
     with:
       branch: ${{ github.event.pull_request.head.ref }}
+      build_flavor: 'staging'
+      build_type: 'proguardDebug'
       workflow: 'staging'
     secrets: 
       token: ${{ secrets.BITRISE_TOKEN }}
