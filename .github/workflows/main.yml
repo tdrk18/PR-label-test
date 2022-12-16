@@ -14,7 +14,7 @@ jobs:
       build_flavor: 'staging'
       build_type: 'proguardDebug'
     secrets: 
-      token: ${{ secrets.BITRISE_TOKEN }}
+      token: ${{ secrets.CIRCLE_TOKEN }}
 
   comment:
     runs-on: ubuntu-latest
