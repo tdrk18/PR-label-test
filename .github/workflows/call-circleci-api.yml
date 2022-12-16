@@ -1,4 +1,4 @@
-name: Call Bitrise build API
+name: Call CircleCI API
 
 on:
   workflow_call:
