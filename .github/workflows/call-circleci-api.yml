@@ -1,0 +1,36 @@
+name: Call Bitrise build API
+
+on:
+  workflow_call:
+    inputs:
+      branch:
+        required: true
+        type: string
+      build_flavor:
+        required: true
+        type: string
+      build_type:
+        required: true
+        type: string
+    outputs:
+      build_url:
+        description: "The URL of build"
+        value: ${{ jobs.build.outputs.build_url }}
+    secrets:
+      token:
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      CIRCLE_TOKEN: ${{ secrets.CIRCLE_TOKEN }}
+    outputs:
+      build_url: ${{ steps.call.outputs.build_url }}
+    steps:
+      - name: Call CircleCI API
+        id: call
+        run: |
+          response=$(curl -H "Content-Type: application/json" -H "Circle-Token: ${{ secrets.token }}" -d "{\"build_parameters\": {\"MITENE_BUILD_FLAVOR\": \"${{ inputs.build_flavor }}\", \"MITENE_BUILD_TYPE\": \"${{ inputs.build_type }}\"}}" -X POST "https://circleci.com/api/v1.1/project/github/tdrk18/PR-label-test/tree/${{ inputs.branch }}")
+          build_url=$(echo $response | jq -r '.build_url')
+          echo "build_url=$build_url" >> $GITHUB_OUTPUT
