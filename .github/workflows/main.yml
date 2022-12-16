@@ -13,7 +13,6 @@ jobs:
       branch: ${{ github.event.pull_request.head.ref }}
       build_flavor: 'staging'
       build_type: 'proguardDebug'
-      workflow: 'staging'
     secrets: 
       token: ${{ secrets.BITRISE_TOKEN }}
 
